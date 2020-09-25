@@ -2,42 +2,52 @@
 #include <ctime>
 #include <vector>
 #include <algorithm>
+#include <string>
 using namespace std;
 
-const int COUNT = 10;
+const int COUNT = 25;
 
-double mean(const vector<int>& a, int n) 
+double mean(const vector<int>& array, int n) 
 {
+	int dec;
+	cout << "how many decimal places you want the answer to be rounded to? ";
+	cin >> dec;
+
+	cout.setf(ios::fixed);
+	cout.precision(dec);
 	double sum = 0;
 	for (int i = 0; i < n; i++)
-		sum += a[i];
+		sum += array[i];
 	return sum / n;
 }
 
-int median(vector<int>& a, int n)
+pair<int, int> median(vector<int>& sorted_array, int n)
 {
-	sort(a.begin(), a.end());
-	return a[n / 2];
+	if (n % 2 == 0) return { sorted_array[n / 2 - 1], sorted_array[n / 2] };
+	return { sorted_array[n / 2], NULL };
 }
 
-int mode(const vector<int>& a, int n)
+vector<int> mode(const vector<int>& sorted_array, int n)
 {
-	int mx = 0, curr = 0, val;
-	for (int i = 0; i + 1 < n; i++)
-		if (a[i] == a[i + 1]) curr++;
-		else {
-			if (mx < curr) {
-				mx = curr;
-				val = a[i];
-			}
-			curr = 1;
-		}
-	return val;
+	vector<int> res;
+	vector<int> d(n);
+	d[0] = 1;
+	int mx = 0;
+	for (int i = 0; i + 1 < n; i++) {
+		if (sorted_array[i] == sorted_array[i + 1])
+			d[i + 1] = d[i] + 1;
+		else
+			d[i + 1] = 1;
+		if (d[i + 1] > mx) mx = d[i + 1];
+	}
+
+	for (int j = 0; j < n; j++)
+		if (d[j] == mx) res.push_back(sorted_array[j]);
+	return res;
 }
 
 void print(const vector<int>& a, int n)
 {
-	cout << "numbers : ";
 	for (int i = 0; i < n; i++)
 		cout << a[i] << " ";
 	cout << endl;
@@ -49,11 +59,16 @@ int main()
 	srand(time(NULL));
 	for (int i = 0; i < COUNT; i++)
 		a[i] = rand() % 100;
+	sort(a.begin(), a.end());
 
+	cout << "numbers : ";
 	print(a, COUNT);
 	cout << "mean : " << mean(a, COUNT) << endl;
-	cout << "median : " << median(a, COUNT) << endl;
-	cout << "mode : " << mode(a, COUNT) << endl;
+	pair<int, int> medians = median(a, COUNT);
+	cout << "median : " << medians.first << " " << (medians.second == NULL ? "" : to_string(medians.second)) << endl;
+	vector<int> modes = mode(a, COUNT);
+	cout << "mode : ";
+	print(modes, modes.size());
 
 	return 0;
 }
