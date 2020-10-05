@@ -26,7 +26,7 @@
 
 :heavy_check_mark: [Fibonacci Sequence](cpp/fibonacci_sequence.cpp)
 
-:x: [Base Jumper](#base-jumper)
+:construction: [Base Jumper](cpp/base_jumper.cpp)
 
 :x: [Hangman Game](#hangman-game)
 
