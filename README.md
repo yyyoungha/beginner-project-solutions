@@ -28,7 +28,7 @@
 
 :heavy_check_mark: [Base Jumper](cpp/base_jumper.cpp)
 
-:x: [Hangman Game](#hangman-game)
+:construction: [Hangman Game](#hangman-game)
 
 :x: [War Card Game](#war-card-game)
 
